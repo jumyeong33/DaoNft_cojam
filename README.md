@@ -8,9 +8,7 @@ This project `truffle-config.js` support Ethereum (main/test), Binance (main/tes
 - truffle : v 5.5.18
 
 ## Start
-```
-git clone https://github.com/jumyeong33/Start-Template-truffle.git .
-```
+Download zip file and make directory.
 
 install packages
 ```
