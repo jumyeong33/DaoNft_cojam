@@ -1,0 +1,25 @@
+{
+  "name": "lego-smart-contract",
+  "version": "1.0.0",
+  "description": "start smart contract project with truffle(solidity)",
+  "main": "index.js",
+  "author": "jumyeong lee <jm01028250379@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.1",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "prettier-plugin-solidity": "^1.0.0-dev.23",
+    "solidity-coverage": "^0.7.21",
+    "truffle-hdwallet-provider": "^1.0.17",
+    "truffle-hdwallet-provider-klaytn": "^1.4.2",
+    "web3": "^1.7.4"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.0"
+  }
+}
