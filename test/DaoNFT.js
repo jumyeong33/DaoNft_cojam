@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const { expect, assert } = require("chai");
 
 const DaoNFT = artifacts.require("DaoNFT.sol");
@@ -6,7 +7,7 @@ require("chai").use(require("chai-as-promised")).should();
 
 contract("DaoNFT", (accounts) => {
   let nft;
-  const [owner, user1, user2, user3] = accounts;
+  const [owner, user1, user2] = accounts;
 
   beforeEach(async () => {
     nft = await DaoNFT.new("WOD MON TEST", "WMT");
@@ -35,9 +36,9 @@ contract("DaoNFT", (accounts) => {
   });
   describe("Mint", () => {
     beforeEach(async () => {
+      await nft.setMintingContract(owner);
       await nft.safeMint(user1);
     });
-
     it("should mint a token as tokenID 6", async () => {
       const mintedAddress = await nft.ownerOf(6);
 
@@ -59,7 +60,7 @@ contract("DaoNFT", (accounts) => {
     it("only owner can mint", async () => {
       return await expect(
         nft.safeMint(user2, { from: user1 })
-      ).to.be.rejectedWith("Ownable: caller is not the owner");
+      ).to.be.rejectedWith("Message sender is not Minting contract");
     });
   });
 
@@ -69,7 +70,7 @@ contract("DaoNFT", (accounts) => {
 
       assert.equal(
         uri,
-        "https://gateway.pinata.cloud/ipfs/QmTbFxK5Yo1NTo4nTJtQZLx3DoU4zLjkmTsm48AubBLi3J/5.json"
+        "https://gateway.pinata.cloud/ipfs/QmPfhbDnwDcdw2hC6D1ULQTjRnrJFrCzxq5E79JMMZ9rra/5.json"
       );
     });
   });

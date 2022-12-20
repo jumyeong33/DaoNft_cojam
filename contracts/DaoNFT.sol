@@ -10,13 +10,14 @@ contract DaoNFT is ERC721Enumerable, Ownable {
 
     string public baseExtension = ".json";
     bool public paused = false;
+    address public mintingContract;
 
     constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {
         _preMint(msg.sender, 5);
     }
     // internal
     function _baseURI() internal view virtual override returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmTbFxK5Yo1NTo4nTJtQZLx3DoU4zLjkmTsm48AubBLi3J/";
+        return "https://gateway.pinata.cloud/ipfs/QmPfhbDnwDcdw2hC6D1ULQTjRnrJFrCzxq5E79JMMZ9rra/";
     }
 
     function _preMint(address _to, uint256 _mintAmount) internal onlyOwner {
@@ -27,7 +28,7 @@ contract DaoNFT is ERC721Enumerable, Ownable {
     }
 
     // external
-    function safeMint(address _to) external onlyOwner {
+    function safeMint(address _to) external onlyMintingContract {
         uint256 supply = totalSupply();
         require(!paused);
 
@@ -53,5 +54,14 @@ contract DaoNFT is ERC721Enumerable, Ownable {
     //only owner
     function pause(bool _state) public onlyOwner {
         paused = _state;
+    }
+
+    function setMintingContract(address _mintingContract) external onlyOwner {
+        mintingContract = _mintingContract;
+    }
+
+    modifier onlyMintingContract() {
+        require(mintingContract == msg.sender, "Message sender is not Minting contract");
+        _;
     }
 }
