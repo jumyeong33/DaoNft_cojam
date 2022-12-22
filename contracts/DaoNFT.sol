@@ -17,7 +17,7 @@ contract DaoNFT is ERC721Enumerable, Ownable {
     }
     // internal
     function _baseURI() internal view virtual override returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmPfhbDnwDcdw2hC6D1ULQTjRnrJFrCzxq5E79JMMZ9rra/";
+        return "https://gateway.pinata.cloud/ipfs/QmdgVhyJhognDefbQgUBh7FciU5FbVB7TpNXC66WMFWWAR/";
     }
 
     function _preMint(address _to, uint256 _mintAmount) internal onlyOwner {

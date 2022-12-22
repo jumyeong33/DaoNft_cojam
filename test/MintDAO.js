@@ -20,19 +20,18 @@ async function getBal(address) {
   return await web3.eth.getBalance(address);
 }
 /* 
-    Test setting for MintDAO.sol
+    uint256 public costTier1 = 100 ether;
+    uint256 public costTier2 = 200 ether;
+    uint256 public costTier3 = 300 ether;
 
-    uint256 public cost = 100 ether;
-    uint256 public costNext = 200 ether;
-
-    uint256 public maxSupply = 14;
+    uint256 public maxSupply = 20;
     uint256 public maxMintAmount = 5;
 */
 contract("MintDAO", (accounts) => {
   let nft;
   let minting;
   let ctToken;
-  const [owner, user1, user2, user3] = accounts;
+  const [owner, user1, user2, user3, user4] = accounts;
   const TOKEN_BALANCE = 10000 * 10 ** 18;
 
   beforeEach(async () => {
@@ -44,11 +43,13 @@ contract("MintDAO", (accounts) => {
 
     await ctToken.mint(user1, toWei("1000"));
     await ctToken.mint(user2, toWei("1000"));
-    await ctToken.mint(user3, toWei("200"));
+    await ctToken.mint(user3, toWei("1500"));
+    await ctToken.mint(user4, toWei("200"));
 
     await ctToken.approve(minting.address, toWei("1000"), { from: user1 });
     await ctToken.approve(minting.address, toWei("1000"), { from: user2 });
-    await ctToken.approve(minting.address, toWei("1000"), { from: user3 });
+    await ctToken.approve(minting.address, toWei("1500"), { from: user3 });
+    await ctToken.approve(minting.address, toWei("1000"), { from: user4 });
   });
 
   describe("deployed", () => {
@@ -107,13 +108,17 @@ contract("MintDAO", (accounts) => {
       beforeEach(async () => {
         await minting.mint(user1, 5, { from: user1 });
         const bal = await ctToken.balanceOf(minting.address);
+
         assert.equal(toNum(bal), 500);
       });
       it("should mint with next cost", async () => {
         await minting.mint(user2, 1, { from: user2 });
+        const bal = await ctToken.balanceOf(user2);
+
+        assert.equal(toNum(bal), 800);
       });
     });
-    //for testing, maxSupply = 14
+    //for testing, maxSupply = 19
     describe("Require Pass", () => {
       describe("_mintAmount", () => {
         it("should be more than 0", async () => {
@@ -129,7 +134,8 @@ contract("MintDAO", (accounts) => {
         });
 
         it("should be less than max supply amount", async () => {
-          minting.mint(user2, 5, { from: user2 });
+          await minting.mint(user2, 5, { from: user2 });
+          await minting.mint(user3, 5, { from: user3 });
 
           return await expect(
             minting.mint(user1, 5, { from: user1 })
@@ -148,7 +154,7 @@ contract("MintDAO", (accounts) => {
         describe("previous cost", () => {
           it("buyer should have enough token to mint", async () => {
             return await expect(
-              minting.mint(user3, 3, { from: user3 })
+              minting.mint(user4, 3, { from: user4 })
             ).to.be.rejectedWith("ERC20: transfer amount exceeds balance");
           });
         });
@@ -157,7 +163,7 @@ contract("MintDAO", (accounts) => {
           it("buyer should have enough token to mint", async () => {
             await minting.mint(user2, 5, { from: user2 });
             return await expect(
-              minting.mint(user3, 2, { from: user3 })
+              minting.mint(user4, 2, { from: user4 })
             ).to.be.rejectedWith("ERC20: transfer amount exceeds balance");
           });
         });

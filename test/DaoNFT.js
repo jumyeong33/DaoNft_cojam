@@ -70,7 +70,7 @@ contract("DaoNFT", (accounts) => {
 
       assert.equal(
         uri,
-        "https://gateway.pinata.cloud/ipfs/QmPfhbDnwDcdw2hC6D1ULQTjRnrJFrCzxq5E79JMMZ9rra/5.json"
+        "https://gateway.pinata.cloud/ipfs/QmdgVhyJhognDefbQgUBh7FciU5FbVB7TpNXC66WMFWWAR/5.json"
       );
     });
   });

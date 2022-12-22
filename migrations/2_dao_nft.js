@@ -2,7 +2,7 @@ const DaoNFT = artifacts.require("DaoNFT");
 const fs = require("fs");
 
 module.exports = function (deployer) {
-  deployer.deploy(DaoNFT, "COJAM DAO TEST", "CDT").then(() => {
+  deployer.deploy(DaoNFT, "MY DAO", "MDT").then(() => {
     if (DaoNFT._json) {
       fs.writeFile(
         "deployedABI_DaoNFT",
